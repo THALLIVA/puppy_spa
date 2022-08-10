@@ -163,8 +163,8 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
-        child: FutureBuilder<List<WaitingListItem>>(
-            future: AppServices().getTodayWaitingList(),
+        child: StreamBuilder<List<WaitingListItem>>(
+            stream: AppServices().getTodayWaitingList().asStream(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
@@ -219,7 +219,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 );
               } else {
-                return const SizedBox();
+                return const CircularProgressIndicator();
               }
             }),
       ),
