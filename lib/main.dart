@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Puppy Spa',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -56,6 +56,12 @@ class _MainPageState extends State<MainPage> {
         androidApiKey: "61CF7DD9-44F8-4A31-A59A-823A45003F18",
         iosApiKey: "EED70B05-6205-4411-A6B9-260B2BA5FF16",
         jsApiKey: "CE609266-546A-4168-919B-943A6CA7F111");
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await AppServices().getTodayWaitingList().whenComplete(() {
+        setState(() {});
+      });
+    });
   }
 
   @override
@@ -163,8 +169,8 @@ class _MainPageState extends State<MainPage> {
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder<List<WaitingListItem>>(
-            stream: AppServices().getTodayWaitingList().asStream(),
+        child: FutureBuilder<List<WaitingListItem>>(
+            future: AppServices().getTodayWaitingList(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListView.builder(
